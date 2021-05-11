@@ -1,0 +1,4 @@
+output/
+main_app/input/
+main_app/models/
+main_app/src/__pycache__

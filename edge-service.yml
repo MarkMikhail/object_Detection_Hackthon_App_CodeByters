@@ -1,0 +1,8 @@
+version: '3.3'
+services:
+    obj_detection:
+        restart: always
+        image: edge/cv/agora_object_detection:hackathon_test
+        container_name: obj_detection
+        volumes:
+            - "/home/agorasdk/Documents/object_Detection_Hackthon_App_CodeByters/output:/main_app/shared/"
