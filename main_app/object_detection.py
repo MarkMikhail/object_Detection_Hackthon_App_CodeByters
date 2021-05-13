@@ -416,9 +416,20 @@ class Visualizer:
             img_name="object_detection_{}.jpg".format(int(time.time()))
 
             if currentPersons!=prevPerson or currentCar!=prevCar or currentAnimal!=prevAnimal:
-                print("Persons:{}      Cars:{}       Animals:{}  ".format(currentPersons,currentCar,currentAnimal))
+                log.info("Persons:{}      Cars:{}       Animals:{} ".format(currentPersons,currentCar,currentAnimal))
                 
+            allAttributes = detections[0][1]
+            # [Result1, Result2, Result3 , ... ]
+            # Result1.attributes = {has_hat: 0.5, is_male: 0.1, ...}
+            peopleWithHelmets = 0
+
+            numOfPeople = len(allAttributes)
+            for person in allAttributes:
+                if person.attributes['has_hat'] > 0.5:
+                    peopleWithHelmets += 1
                 
+            if peopleWithHelmets < numOfPeople:
+                log.warning("PEOPLE WITHOUT HELMET")
             
             if self.output_stream:
                 self.output_stream.write(frame)
@@ -494,7 +505,6 @@ class Visualizer:
             fourcc = cv2.VideoWriter.fourcc(*'h264')
             output_stream = cv2.VideoWriter(path,
                                             fourcc, fps, frame_size)
-        log.info("Output Stream Opened")
         return output_stream
     
 def main():
